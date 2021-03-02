@@ -1,26 +1,45 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <loading v-if="load" size="40px" color="#1989fa" class="app_loading">加载中...</loading>
+    <router-view @loading="loading" @finish="finish" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { Loading } from "vant";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Loading,
+  },
+  data() {
+    return {
+      load: false,
+    };
+  },
+  methods: {
+    loading() {
+      this.load = true;
+    },
+    finish() {
+      this.load = false;
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+.app_loading {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding-bottom: 10vh;
+  position: fixed;
+  z-index: 2;
+  background: #f6f6f6;
 }
 </style>
