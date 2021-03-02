@@ -14,7 +14,6 @@ import xh from "../components/CDataReviews/xh.vue";
 import ygs from "../components/CDataReviews/ygs.vue";
 import wq from "../components/CDataReviews/wq.vue";
 import publicFunc from "../publicFunc";
-import { Loading } from "vant";
 import * as echarts from "echarts/core";
 import { GridComponent, TitleComponent, DataZoomComponent, TooltipComponent } from "echarts/components";
 import { LineChart } from "echarts/charts";
@@ -27,7 +26,6 @@ export default {
     xh,
     ygs,
     wq,
-    Loading,
   },
   created() {
     this.para.startTime = publicFunc.format(new Date(new Date().setDate(new Date().getDate() - 8)));

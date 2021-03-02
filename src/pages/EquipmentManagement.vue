@@ -245,16 +245,16 @@ export default {
       this.formData[2].content = obj.longitude;
       this.formData[3].content = obj.latitude;
       this.formData[4].content = obj.altitude;
-      if (typeof obj.state !== "undefined") {
-        this.formData[5].content = obj.state === 0 ? "设备异常" : "正常运行";
+      if (obj.state !== null) {
+        this.formData[5].content = obj.state === 1 ? "设备异常" : "正常运行";
       }
-      if (typeof obj.typeId !== "undefined") {
+      if (obj.typeId !== null) {
         let elem1 = this.equipmentType.filter((ele) => {
           return ele.id === obj.typeId;
         });
         this.formData[6].content = elem1[0].typeName;
       }
-      if (typeof obj.parentId !== "undefined") {
+      if (obj.parentId !== null) {
         let elem2 = this.list_grade1.filter((ele) => {
           return ele.id === obj.parentId;
         });

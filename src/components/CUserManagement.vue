@@ -1,7 +1,7 @@
 <template>
   <div class="userCard">
     <div class="left">
-      <img :src="User.avator" />
+      <img :src="User.avatar" />
       <!-- <div :class="['svgBackground','backColor'+i]">{{ User.username }}</div> -->
     </div>
     <div class="right">

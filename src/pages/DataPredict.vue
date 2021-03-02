@@ -1,9 +1,46 @@
 <template>
-  <div class="a">建设中</div>
+  <c-data-predict
+    v-for="(item, index) in dataList"
+    :key="index"
+    :divId="'line'+index"
+    :lable="item.lable"
+    :echarts="echarts"
+    :area="item.areaValue"
+    @finish="finish"
+  />
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+import CDataPredict from "../components/CDataPredict";
+import * as echarts from "echarts/core";
+import { GridComponent, TitleComponent, DataZoomComponent, TooltipComponent } from "echarts/components";
+import { LineChart } from "echarts/charts";
+import { CanvasRenderer } from "echarts/renderers";
+echarts.use([GridComponent, LineChart, TitleComponent, CanvasRenderer, TooltipComponent, DataZoomComponent]);
+
+export default {
+  components: { CDataPredict },
+  mounted() {
+    this.getData();
+  },
+  data() {
+    return {
+      echarts: echarts,
+      dataList: [],
+    };
+  },
+  methods: {
+    async getData() {
+      this.$emit("loading");
+      let dataList = await axios.get("/api/forecast/param");
+      this.dataList = dataList.data.data;
+    },
+    finish() {
+      this.$emit("finish");
+    },
+  },
+};
 </script>
 
 <style>

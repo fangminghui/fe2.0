@@ -104,6 +104,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 1vh;
+  justify-content: space-around;
 }
 .eachData {
   margin: 2vw 0;
