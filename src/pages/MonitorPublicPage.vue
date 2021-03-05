@@ -12,8 +12,8 @@
 </template>
 <script>
 import { List } from "vant";
-import publicFunc from "../../publicFunc";
-import CMonitor from "../../components/CMonitor.vue";
+import publicFunc from "../publicFunc";
+import CMonitor from "../components/CMonitor.vue";
 export default {
   components: {
     List,
@@ -25,6 +25,12 @@ export default {
   created() {
     this.getData();
     setInterval(this.reFresh, 5000); //指定5秒刷新一次
+  },
+  watch: {
+    id: function () {
+      this.para.id = this.id;
+      this.getData();
+    },
   },
   data() {
     return {
@@ -44,16 +50,15 @@ export default {
       this.dataList = [];
       this.finished = false;
       this.loading = true;
-      this.$emit("loading");
       this.para.pageNum = 1;
       let result = await publicFunc.getData(this.api, this.para, 0);
       this.refreshing = false;
-      this.$emit("finish");
       if (result.length > 0) {
         this.para.pageNum++;
         this.dataList = result;
+        this.$emit("finish");
       } else {
-        this.$emit("noData");
+        this.$emit("nodata");
       }
       this.loading = false;
     }, //获取数据

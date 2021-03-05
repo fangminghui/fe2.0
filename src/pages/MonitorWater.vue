@@ -10,7 +10,7 @@
 </template>
 <script>
 import { List, cell } from "vant";
-import publicFunc from "../../publicFunc";
+import publicFunc from "../publicFunc";
 export default {
   components: {
     List,
@@ -30,7 +30,6 @@ export default {
   methods: {
     async getData() {
       this.dataList = [];
-      this.$emit("loading");
       let result = await publicFunc.getData(this.api, this.para, 0);
       this.$emit("finish");
       if (result.length > 0) {

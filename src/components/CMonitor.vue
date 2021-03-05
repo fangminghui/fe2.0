@@ -91,7 +91,7 @@ export default {
   border-radius: 50%;
   background-color: #ffd902;
 }
-.van-cell {
+.van-list > .van-cell {
   padding: 1vw;
 }
 </style>

@@ -6,6 +6,7 @@
       标签
       <Switch v-model="checked" size="20px" inactive-color="#e3e3e3" @click="chengeSwitch" />
     </div>
+    <loading v-if="load" size="40px" color="#1989fa" class="app_loading">加载中...</loading>
   </div>
 </template>
 
@@ -13,13 +14,15 @@
 import CGIS from "./components/CGIS.vue";
 import pipeData from "./pipeData";
 import { Switch } from "vant";
-
+import { Loading } from "vant";
 export default {
   components: {
     CGIS,
     Switch,
+    Loading,
   },
   mounted() {
+    this.load = true;
     this.initMap();
   },
 
@@ -29,6 +32,7 @@ export default {
       info: "",
       show: false,
       checked: false,
+      load: false,
     };
   },
   methods: {
@@ -100,6 +104,7 @@ export default {
       let parent = document.getElementsByClassName("tdt-pane tdt-map-pane")[0];
       let child = document.getElementsByClassName("tdt-overlay-pane")[0].firstElementChild;
       parent.appendChild(child);
+      setTimeout(() => (this.load = false), 1000);
     },
     showInfo(i) {
       this.info = this.data[i];
@@ -142,5 +147,18 @@ export default {
   right: 3vw;
   display: flex;
   align-items: center;
+}
+.app_loading {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding-bottom: 10vh;
+  position: fixed;
+  top: 0;
+  z-index: 3;
+  background: #f6f6f6;
 }
 </style>>

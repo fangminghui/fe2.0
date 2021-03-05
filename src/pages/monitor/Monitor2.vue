@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import PublicPage from "./PublicPage.vue";
+import PublicPage from "../MonitorPublicPage.vue";
 export default {
   components: {
     PublicPage,
