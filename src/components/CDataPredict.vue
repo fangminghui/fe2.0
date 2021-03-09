@@ -28,13 +28,9 @@ export default {
         if (obj.real !== null) {
           realData.push(obj.real.toFixed(2));
         } else {
-          realData.push(0);
+          realData.push(null);
         }
-        if (obj.predict !== null) {
-          predictData.push(obj.predict.toFixed(2));
-        } else {
-          predictData.push(0);
-        }
+        predictData.push(obj.predict.toFixed(2));
       }
       let myChart = this.echarts.init(document.getElementById(dom));
       let option = {
@@ -47,6 +43,10 @@ export default {
           axisPointer: {
             type: "cross",
           },
+        },
+        legend: {
+          top: "8%",
+          data: ["实际值", "预测值"],
         },
         xAxis: {
           type: "category",
@@ -75,14 +75,16 @@ export default {
         ],
         series: [
           {
-            type: "line",
-            symbol: "none",
-            data: realData,
-          },
-          {
+            name: "预测值",
             type: "line",
             symbol: "none",
             data: predictData,
+          },
+          {
+            name: "实际值",
+            type: "line",
+            symbol: "none",
+            data: realData,
           },
         ],
       };

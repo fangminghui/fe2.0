@@ -14,10 +14,24 @@
 import axios from "axios";
 import CDataPredict from "../components/CDataPredict";
 import * as echarts from "echarts/core";
-import { GridComponent, TitleComponent, DataZoomComponent, TooltipComponent } from "echarts/components";
+import {
+  LegendComponent,
+  GridComponent,
+  TitleComponent,
+  DataZoomComponent,
+  TooltipComponent,
+} from "echarts/components";
 import { LineChart } from "echarts/charts";
 import { CanvasRenderer } from "echarts/renderers";
-echarts.use([GridComponent, LineChart, TitleComponent, CanvasRenderer, TooltipComponent, DataZoomComponent]);
+echarts.use([
+  GridComponent,
+  LegendComponent,
+  LineChart,
+  TitleComponent,
+  CanvasRenderer,
+  TooltipComponent,
+  DataZoomComponent,
+]);
 
 export default {
   components: { CDataPredict },
