@@ -12,7 +12,6 @@
 
 <script>
 import CGIS from "./components/CGIS.vue";
-import pipeData from "./pipeData";
 import { Switch } from "vant";
 import { Loading } from "vant";
 export default {
@@ -88,24 +87,36 @@ export default {
       parent.style.visibility = "hidden";
       this.initLine(map, T);
     },
-    initLine(map, T) {
-      let points;
-      let array;
+    async initLine(map, T) {
+      let points = [];
       let line;
-      for (let i = 0; i < 2; i++) {
-        points = [];
-        array = pipeData.getPipeData(i + 1);
-        for (let pipe of array) {
-          points.push(new T.LngLat(pipe[0], pipe[1]));
-        }
-        line = new T.Polyline(points);
-        map.addOverLay(line);
-      } //画线
+      let pipelines;
+      let pageSize;
+      await this.axios.get("api/pipeline/list?pageNum=1&pageSize=1").then((response) => {
+        pageSize = response.data.data.total;
+      });
+      await this.axios.get("api/pipeline/list?pageNum=1&pageSize=" + pageSize).then((response) => {
+        pipelines = response.data.data.resultList;
+      });
+      for (let pipeline of pipelines) {
+        await this.axios.get("/api/pipe_point/list?pipelineId=" + pipeline.id).then((response) => {
+          let data = response.data.data;
+          if (data.length >= 2) {
+            for (let pipe of data) {
+              points.push(new T.LngLat(pipe.latitude, pipe.longitude));
+            }
+            line = new T.Polyline(points);
+            map.addOverLay(line);
+            points = [];
+          }
+        });
+      }
       let parent = document.getElementsByClassName("tdt-pane tdt-map-pane")[0];
-      let child = document.getElementsByClassName("tdt-overlay-pane")[0].firstElementChild;
+      let child = document.getElementsByClassName("tdt-overlay-pane")[0].lastElementChild;
       parent.appendChild(child);
       setTimeout(() => (this.load = false), 1000);
     },
+
     showInfo(i) {
       this.info = this.data[i];
       setTimeout(() => {

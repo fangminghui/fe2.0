@@ -10,7 +10,7 @@ const DataReview = () => import('../pages/DataReview')
 const Videos = () => import('../pages/Videos')
 const Monitor = () => import('../pages/Monitor')
 const SQL = () => import('../pages/SQL')
-
+const GISManagement = () => import('../pages/GISManagement')
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -68,6 +68,11 @@ const router = createRouter({
       path: '/SQL',
       name: 'SQL',
       component: SQL,
+    },
+    {
+      path: '/GISManagement',
+      name: 'GISManagement',
+      component: GISManagement,
     },
   ]
 })

@@ -214,7 +214,6 @@ export default {
         if (result.length > 0) {
           this.para.pageNum++;
           this.dataList = this.dataList.concat(result);
-          console.log(this.para.pageNum);
         } else {
           this.finished = true;
         }
@@ -322,7 +321,7 @@ export default {
       em.state = formDataCopy[5].value;
       em.typeId = formDataCopy[6].value;
       em.parentId = formDataCopy[7].value;
-      this.this.axios.post("/api/equipment/add", em).then((response) => {
+      this.axios.post("/api/equipment/add", em).then((response) => {
         if (response.data.code === 200) {
           Toast.success("添加成功");
           this.dataList = this.dataList.concat(em);
@@ -340,14 +339,6 @@ export default {
 <style scoped>
 .equipmentManagement {
   width: 100%;
-}
-.popDiv {
-  width: 50vw;
-  height: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 .addButton {
   position: fixed;

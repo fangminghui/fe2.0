@@ -259,7 +259,7 @@ export default {
       wm.content = formDataCopy[4].content;
       wm.highAlarmSetting = formDataCopy[5].content;
       wm.lowAlarmSetting = formDataCopy[6].content;
-      this.this.axios.post("/api/warningType/add", wm).then((response) => {
+      this.axios.post("/api/warningType/add", wm).then((response) => {
         if (response.data.code === 200) {
           Toast.success("添加成功");
           this.dataList = this.dataList.concat(wm);
@@ -277,14 +277,6 @@ export default {
 <style scoped>
 .WarningManagement {
   width: 100%;
-}
-.popDiv {
-  width: 50vw;
-  height: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 .addButton {
   position: fixed;
