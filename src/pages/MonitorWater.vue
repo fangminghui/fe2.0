@@ -35,7 +35,7 @@ export default {
       if (result.length > 0) {
         this.dataList = result;
       } else {
-        this.$emit("noData");
+        this.$emit("nodata");
       }
     }, //获取数据
     async reFresh() {

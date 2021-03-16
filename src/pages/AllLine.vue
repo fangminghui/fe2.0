@@ -90,13 +90,14 @@ export default {
   },
   methods: {
     async getData() {
+      this.para.pageNum = 1;
       let result = await publicFunc.getData(this.api, this.para);
       if (result.length > 0) {
         this.para.pageNum++;
         this.dataList = result;
         this.$emit("finish");
       } else {
-        this.$emit("noData");
+        this.$emit("nodata");
       }
       this.loading = false;
     }, //获取数据
@@ -125,6 +126,7 @@ export default {
         .then((response) => {
           if (response.data.code === 200) {
             Toast.success("删除成功");
+            this.getData();
             this.showDelete = false;
             this.dataList.splice(this.dataIndex, 1);
           }
@@ -192,6 +194,7 @@ export default {
             for (let i = 0; i < 5; i++) {
               this.formData[i].content = "";
             }
+            this.getData();
           }
         })
         .catch(() => {

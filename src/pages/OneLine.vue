@@ -1,5 +1,5 @@
 <template>
-  <list :finished="true" finished-text="没有更多了">
+  <list>
     <c-point
       v-for="(point, index) in dataList"
       :key="point.id"
@@ -73,7 +73,7 @@ export default {
         this.dataList = result;
         this.$emit("finish");
       } else {
-        this.$emit("noData");
+        this.$emit("nodata");
       }
       this.loading = false;
     }, //获取数据
@@ -90,6 +90,9 @@ export default {
         .then((response) => {
           if (response.data.code === 200) {
             Toast.success("删除成功");
+            if (this.dataList.length === 1) {
+              this.getData();
+            }
             this.showDelete = false;
             this.dataList.splice(this.dataIndex, 1);
           }
@@ -148,6 +151,9 @@ export default {
           if (response.data.code === 200) {
             Toast.success("添加成功");
             this.dataList = this.dataList.concat(point);
+            if (this.dataList.length === 1) {
+              this.getData();
+            }
             this.showAdd = false;
             for (let i = 0; i < 3; i++) {
               this.formData[i].content = "";

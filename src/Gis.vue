@@ -92,6 +92,7 @@ export default {
       let line;
       let pipelines;
       let pageSize;
+      let flag = false;
       await this.axios.get("api/pipeline/list?pageNum=1&pageSize=1").then((response) => {
         pageSize = response.data.data.total;
       });
@@ -102,6 +103,7 @@ export default {
         await this.axios.get("/api/pipe_point/list?pipelineId=" + pipeline.id).then((response) => {
           let data = response.data.data;
           if (data.length >= 2) {
+            flag = true;
             for (let pipe of data) {
               points.push(new T.LngLat(pipe.latitude, pipe.longitude));
             }
@@ -111,9 +113,11 @@ export default {
           }
         });
       }
-      let parent = document.getElementsByClassName("tdt-pane tdt-map-pane")[0];
-      let child = document.getElementsByClassName("tdt-overlay-pane")[0].lastElementChild;
-      parent.appendChild(child);
+      if (flag) {
+        let parent = document.getElementsByClassName("tdt-pane tdt-map-pane")[0];
+        let child = document.getElementsByClassName("tdt-overlay-pane")[0].lastElementChild;
+        parent.appendChild(child);
+      }
       setTimeout(() => (this.load = false), 1000);
     },
 

@@ -22,9 +22,9 @@
         @finish="onFinish"
       />
     </popup>
-    <monitor-public-page v-if="selection!==0" :id="selection" @finish="finish" @nodata="noData" />
-    <monitor-water v-if="waterComp" @finish="finish" @nodata="noData"></monitor-water>
-    <div v-if="nodata" class="nodata">
+    <monitor-public-page v-if="selection!==0" :id="selection" @finish="finish" @nodata="nodata" />
+    <monitor-water v-if="waterComp" @finish="finish" @nodata="nodata"></monitor-water>
+    <div v-if="noDataImg" class="nodata">
       <img src="../assets/svg/noData.svg" class="noDataImg" />
       <div>暂无数据</div>
     </div>
@@ -57,7 +57,7 @@ export default {
       options: [],
       loading: true,
       selection: 0,
-      nodata: false,
+      noDataImg: false,
       waterComp: false,
     };
   },
@@ -93,11 +93,11 @@ export default {
     },
     finish() {
       this.$emit("finish");
-      this.nodata = false;
+      this.noDataImg = false;
     },
-    noData() {
+    nodata() {
       this.$emit("finish");
-      this.nodata = true;
+      this.noDataImg = true;
       this.waterComp = false;
       this.selection = 0;
     },

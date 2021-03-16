@@ -103,7 +103,7 @@ export default {
         this.para.pageNum++;
         this.dataList = result;
       } else {
-        this.$emit("noData");
+        this.$emit("nodata");
       }
       this.loading = false;
     }, //获取数据

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="back"></div>
     <field
       v-model="fieldValue"
       input-align="right"
@@ -22,12 +23,12 @@
         @finish="onFinish"
       />
     </popup>
-    <all-line v-if="allLine" @finish="finish" @nodata="noData" />
-    <one-line v-if="oneLine" :lineId="lineId" @finish="finish" @nodata="noData" />
-    <div v-if="nodata" class="nodata">
+    <div v-if="noDataImg" class="nodata">
       <img src="../assets/svg/noData.svg" class="noDataImg" />
       <div>暂无数据</div>
     </div>
+    <all-line v-if="allLine" @finish="finish" @nodata="nodata" />
+    <one-line v-if="oneLine" :lineId="lineId" @finish="finish" @nodata="nodata" />
   </div>
 </template>
 
@@ -57,12 +58,13 @@ export default {
       loading: true,
       allLine: false,
       oneLine: false,
-      nodata: false,
+      noDataImg: false,
       lineId: 0,
     };
   },
   methods: {
     async getOptions() {
+      this.options = [];
       let pageSize;
       let pipelines;
       await this.axios.get("api/pipeline/list?pageNum=1&pageSize=1").then((response) => {
@@ -88,6 +90,7 @@ export default {
     onFinish({ selectedOptions, value }) {
       this.show = false;
       this.fieldValue = selectedOptions.map((option) => option.text).join("/");
+      let first = this.allLine || this.oneLine;
       if (value === "all") {
         this.allLine = true;
         this.oneLine = false;
@@ -96,17 +99,19 @@ export default {
         this.oneLine = true;
         this.lineId = value;
       }
-      this.$emit("loading");
+      if (!first) {
+        this.$emit("loading");
+      }
     },
     finish() {
       this.$emit("finish");
-      this.nodata = false;
+      this.noDataImg = false;
+      this.getOptions();
     },
-    noData() {
+    nodata() {
       this.$emit("finish");
-      this.nodata = true;
-      this.allLine = false;
-      this.oneLine = false;
+      this.noDataImg = true;
+      this.getOptions();
     },
   },
 };
@@ -134,12 +139,23 @@ export default {
   align-items: center;
 }
 .nodata {
-  height: 80vh;
+  height: 100vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: absolute;
+  top: 0;
+  background-color: #f3f3f3;
+}
+.back {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  background-color: #f3f3f3;
+  z-index: -1;
 }
 .noDataImg {
   width: 30vw;
