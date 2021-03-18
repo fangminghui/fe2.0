@@ -49,10 +49,6 @@ export default {
 </script>
 
 <style scoped>
-.refresh {
-  width: 100vw;
-  min-height: 100vh;
-}
 .waterCell {
   display: flex;
   justify-content: space-between;

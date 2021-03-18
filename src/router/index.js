@@ -11,6 +11,7 @@ const Videos = () => import('../pages/Videos')
 const Monitor = () => import('../pages/Monitor')
 const SQL = () => import('../pages/SQL')
 const GISManagement = () => import('../pages/GISManagement')
+const Meter = () => import('../pages/Meter')
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -73,6 +74,11 @@ const router = createRouter({
       path: '/GISManagement',
       name: 'GISManagement',
       component: GISManagement,
+    },
+    {
+      path: '/Meter',
+      name: 'Meter',
+      component: Meter,
     },
   ]
 })

@@ -21,6 +21,21 @@ module.exports = {
         ws: true,
         changeOrigin: true,
       },
+      // '/auth': {
+      //   target: 'http://www.meter-iot.cn/api/',
+      //   ws: true,
+      //   changeOrigin: true,
+      // },
+      '/auth': {
+        target: 'http://www.meter-iot.cn/api',
+        ws: true,
+        changeOrigin: true,
+      },
+      '/open': {
+        target: 'http://www.meter-iot.cn/api',
+        ws: true,
+        changeOrigin: true,
+      }
     },
   },
   productionSourceMap: false,
