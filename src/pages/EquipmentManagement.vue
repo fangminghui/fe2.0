@@ -69,8 +69,9 @@ export default {
         },
         {
           title: "设备类型",
-          kind: "search",
-          text: "设备类型",
+          kind: "select",
+          content: "",
+          options: [],
         },
         {
           title: "运行状态",
@@ -188,7 +189,12 @@ export default {
           value: item.id,
           option: item.typeName,
         };
+        let option2 = {
+          value: item.id,
+          text: item.typeName,
+        };
         this.formData[6].placeholder.push(option);
+        this.selection[2].options.push(option2);
       }
     },
     async getData() {
@@ -244,16 +250,16 @@ export default {
       this.formData[2].content = obj.longitude;
       this.formData[3].content = obj.latitude;
       this.formData[4].content = obj.altitude;
-      if (obj.state !== null) {
+      if (obj.state !== "" && obj.state !== null) {
         this.formData[5].content = obj.state === 1 ? "设备异常" : "正常运行";
       }
-      if (obj.typeId !== null) {
+      if (obj.typeId !== "" && obj.typeId !== null) {
         let elem1 = this.equipmentType.filter((ele) => {
           return ele.id === obj.typeId;
         });
         this.formData[6].content = elem1[0].typeName;
       }
-      if (obj.parentId !== null) {
+      if (obj.parentId !== "" && obj.parentId !== null) {
         let elem2 = this.list_grade1.filter((ele) => {
           return ele.id === obj.parentId;
         });
@@ -324,11 +330,13 @@ export default {
       this.axios.post("/api/equipment/add", em).then((response) => {
         if (response.data.code === 200) {
           Toast.success("添加成功");
-          this.dataList = this.dataList.concat(em);
           this.showAdd = false;
           for (let i = 0; i < 8; i++) {
             this.formData[i].content = "";
           }
+          setTimeout(() => {
+            this.getData();
+          }, 1000);
         }
       });
     },

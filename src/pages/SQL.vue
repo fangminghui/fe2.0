@@ -208,11 +208,13 @@ export default {
       this.axios.post("/api/column_mapping/add", em).then((response) => {
         if (response.data.code === 200) {
           Toast.success("添加成功");
-          this.dataList = this.dataList.concat(em);
           this.showAdd = false;
           for (let i = 0; i < this.formData.length; i++) {
             this.formData[i].content = "";
           }
+          setTimeout(() => {
+            this.getData();
+          }, 1000);
         }
       });
     },

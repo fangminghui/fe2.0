@@ -150,14 +150,13 @@ export default {
         .then((response) => {
           if (response.data.code === 200) {
             Toast.success("添加成功");
-            this.dataList = this.dataList.concat(point);
-            if (this.dataList.length === 1) {
-              this.getData();
-            }
             this.showAdd = false;
             for (let i = 0; i < 3; i++) {
               this.formData[i].content = "";
             }
+            setTimeout(() => {
+              this.getData();
+            }, 1000);
           }
         })
         .catch(() => {

@@ -189,12 +189,13 @@ export default {
         .then((response) => {
           if (response.data.code === 200) {
             Toast.success("添加成功");
-            this.dataList = this.dataList.concat(pipeLine);
             this.showAdd = false;
             for (let i = 0; i < 5; i++) {
               this.formData[i].content = "";
             }
-            this.getData();
+            setTimeout(() => {
+              this.getData();
+            }, 1000);
           }
         })
         .catch(() => {

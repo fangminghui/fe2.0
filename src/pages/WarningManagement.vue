@@ -262,11 +262,13 @@ export default {
       this.axios.post("/api/warningType/add", wm).then((response) => {
         if (response.data.code === 200) {
           Toast.success("添加成功");
-          this.dataList = this.dataList.concat(wm);
           this.showAdd = false;
           for (let i = 0; i < 7; i++) {
             this.formData[i].content = "";
           }
+          setTimeout(() => {
+            this.getData();
+          }, 1000);
         }
       });
     },
