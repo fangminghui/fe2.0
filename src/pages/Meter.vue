@@ -7,30 +7,54 @@
         <div>累计流量</div>
       </div>
     </cell>
-    <cell v-for="(item,index) in dataList" :key="index">
-      <div class="waterCell">
-        <div>{{index+1}}</div>
-        <div>{{item.deviceCode}}</div>
-        <div>{{item.deviceTotalData}}m³</div>
-      </div>
-    </cell>
+    <collapse v-model="activeNames">
+      <collapse-item v-for="(item,index) in dataList" :key="index">
+        <template #title>
+          <div class="waterCell">
+            <div>{{index+1}}</div>
+            <div>{{item.deviceName}}</div>
+            <div>{{item.deviceTotalData}}m³</div>
+          </div>
+        </template>
+        <c-meter
+          :deviceCode="item.deviceCode"
+          :deviceName="item.deviceName"
+          :openId="openId"
+          :authorization="authorization"
+          :echarts="echarts"
+        />
+      </collapse-item>
+    </collapse>
   </list>
 </template>
 <script>
-import { List, Cell } from "vant";
+import { List, Cell, Collapse, CollapseItem } from "vant";
+import CMeter from "../components/CMeter";
+import * as echarts from "echarts/core";
+import { GridComponent, TitleComponent, DataZoomComponent, TooltipComponent } from "echarts/components";
+import { LineChart } from "echarts/charts";
+import { CanvasRenderer } from "echarts/renderers";
+echarts.use([GridComponent, LineChart, TitleComponent, CanvasRenderer, TooltipComponent, DataZoomComponent]);
 export default {
   components: {
     List,
     Cell,
+    Collapse,
+    CollapseItem,
+    CMeter,
   },
   created() {
     this.getAuth();
+    this.$emit("loading");
   },
   data() {
     return {
+      echarts: echarts,
       dataList: [],
       authorization: "",
       current: 1,
+      activeNames: ["0"],
+      openId: "8cf4b206b02c4267978c492edd061a4a",
     };
   },
   methods: {
@@ -47,7 +71,7 @@ export default {
     async getData() {
       await this.axios({
         method: "get",
-        url: "/open/openapi/read/info/page/8cf4b206b02c4267978c492edd061a4a",
+        url: "/open/openapi/read/info/page/" + this.openId,
         headers: { Authorization: "Bearer " + this.authorization },
         params: {
           current: this.current,
@@ -57,11 +81,28 @@ export default {
         let data = res.data.data.records;
         if (data.length > 0) {
           this.dataList = data;
-          this.$emit("finish");
+          this.getName();
         } else {
           this.$emit("nodata");
         }
       });
+    },
+    getName() {
+      let length = this.dataList.length;
+      for (let index = 0; index < length; index++) {
+        this.axios
+          .get("api/equipment/list?pageNum=1&pageSize=1&deviceNumber=" + this.dataList[index].deviceCode)
+          .then((res) => {
+            if (res.data.data.resultList.length > 0) {
+              this.dataList[index].deviceName = res.data.data.resultList[0].deviceName;
+            } else {
+              this.dataList[index].deviceName = this.dataList[index].deviceCode;
+            }
+            if (index === length - 1) {
+              this.$emit("finish");
+            }
+          });
+      }
     },
   },
 };

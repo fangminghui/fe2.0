@@ -130,6 +130,8 @@ export default {
           {
             show: true,
             realtime: true,
+            start: 0,
+            end: 20,
           },
         ],
         series: [
