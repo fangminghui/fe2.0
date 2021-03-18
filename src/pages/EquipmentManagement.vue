@@ -227,15 +227,24 @@ export default {
       }, 500);
     }, //加载更多
     select(title, content) {
-      if (title === "报警设备") {
-        this.para.alarmDevice = content;
+      console.log(title, content);
+      if (title === "设备编号") {
+        this.para.deviceNumber = content;
         this.getData();
-      } else if (title === "报警类型") {
-        this.para.type = content.value;
+      } else if (title === "设备名称") {
+        this.para.deviceName = content;
         this.getData();
-      } else if (title === "发生时间") {
-        this.para.startTime = publicFunc.format(content.split("?")[0]);
-        this.para.endTime = publicFunc.format(content.split("?")[1]);
+      } else if (title === "设备类型") {
+        this.para.typeId = content.value;
+        this.getData();
+      } else if (title === "运行状态") {
+        if (content.text === "全部") {
+          this.para.state = "";
+        } else if (content.text === "正常运行") {
+          this.para.state = "0";
+        } else {
+          this.para.state = "1";
+        }
         this.getData();
       }
     }, //根据选择处理数据
