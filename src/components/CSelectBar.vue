@@ -18,6 +18,23 @@
         <span>{{ option.text }}</span>
       </div>
     </div>
+    <!-- select 返回多个option对象(额外加的功能）-->
+    <div v-if="selection[showSelectIndex].kind === 'selects'">
+      <div
+        v-for="(option, index) in selection[showSelectIndex].options"
+        :key="index"
+        class="selectDiv"
+        @click="selects_select(option)"
+      >
+        <span>{{ option.text }}</span>
+        <img
+          v-if="selects_options.indexOf(option.value)!==-1"
+          src="../assets/svg/yes.svg"
+          style="height:3.5vw;margin-left:2vw;"
+        />
+      </div>
+      <div class="selects_confirm" @click="selects_confirm">确定</div>
+    </div>
     <!-- search 返回searchMessage-->
     <div v-else-if="selection[showSelectIndex].kind === 'search'">
       <div class="searchDiv">
@@ -91,10 +108,14 @@ export default {
       endTime: "结束时间",
       showTime: false,
       showTimeTitle: "",
+      selects_options: [],
     };
   },
   methods: {
     showSelect(index) {
+      if (this.selection[index].kind === "selects" && this.selection[index].options.length === 0) {
+        return;
+      }
       //传入的index为-1或和当前showSelectIndex一致时关闭，否则打开
       this.showSelectIndex = this.showSelectIndex === index ? -1 : index;
       if (this.showSelectIndex === -1) {
@@ -165,6 +186,22 @@ export default {
         passive: false,
       });
     },
+    selects_select(option) {
+      let index = this.selects_options.indexOf(option.value);
+      if (index === -1) {
+        this.selects_options.push(option.value);
+      } else {
+        this.selects_options.splice(index, 1);
+      }
+    },
+    selects_confirm() {
+      let title = this.selection[this.showSelectIndex].title;
+      this.$emit("select", title, this.selects_options);
+      this.showSelectIndex = -1;
+      document.body.removeEventListener("touchmove", this.bodyScroll, {
+        passive: false,
+      });
+    },
     formatTime(time) {
       if (time !== "开始时间" && time !== "结束时间") {
         time = new Date(time);
@@ -225,6 +262,7 @@ export default {
 .selectDiv {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 3vw 0;
   font-size: 4vw;
   line-height: 4vw;
@@ -294,6 +332,16 @@ export default {
   text-align: center;
   margin: 0 1vw;
   color: #409efe;
+}
+.selects_confirm {
+  height: 9vw;
+  width: 100vw;
+  background: #409efe;
+  border: 0.1vw solid #cccccc;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .van-picker__cancel,
 .van-picker__confirm {

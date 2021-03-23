@@ -1,7 +1,7 @@
 <template>
   <div class="userCard">
     <div class="left">
-      <img :src="User.avatar" />
+      <img :src="User.avatar" class="leftimg" />
       <!-- <div :class="['svgBackground','backColor'+i]">{{ User.username }}</div> -->
     </div>
     <div class="right">
@@ -62,6 +62,9 @@ export default {
   justify-content: center;
   align-items: center;
   margin: 0 2vw;
+}
+.leftimg {
+  width: 20vw;
 }
 .svgBackground {
   width: 15vw;
