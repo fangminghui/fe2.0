@@ -2,13 +2,15 @@
   <div :class="['cline','id'+id]">
     <div class="left">
       <div class="line">
-        <div class="column1">管线名：{{pipeLine.name}}</div>
+        <div class="column">管线名：{{pipeLine.name}}</div>
+      </div>
+      <div class="line">
         <div class="column">长度：{{pipeLine.length}}米</div>
+        <div class="column">管径：{{pipeLine.pipeDiameter}}米</div>
+        <div class="column">材质：{{pipeLine.texture}}</div>
       </div>
       <div class="line">
         <div class="column">厂商：{{pipeLine.manufacturer}}</div>
-        <div class="column2">管径：{{pipeLine.pipeDiameter}}米</div>
-        <div class="column">材质：{{pipeLine.texture}}</div>
       </div>
     </div>
     <div class="right">
@@ -59,7 +61,7 @@ export default {
 <style scoped>
 .cline {
   width: 100%;
-  height: 10vh;
+  height: 12vh;
   border-bottom: 0.1vw solid black;
   display: flex;
   align-items: center;
@@ -78,16 +80,11 @@ export default {
   padding: 0 16px;
   box-sizing: border-box;
 }
-.column1 {
-  min-width: 66%;
-}
-.column2 {
-  min-width: 33%;
-  padding-left: 8%;
-  box-sizing: border-box;
-}
 .column {
   min-width: 33%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .right {
   flex: none;

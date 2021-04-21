@@ -50,6 +50,8 @@ export default {
       } else {
         if (text.indexOf("电量") !== -1) {
           formatter = "kW·h";
+        } else if (text.indexOf("水位") !== -1) {
+          formatter = "m";
         }
         let myChart = this.echarts.init(document.getElementById(dom));
         let option = {

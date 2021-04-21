@@ -67,8 +67,8 @@ export default {
       }
       this.drawLine("line1", "耗电量", "kw.h", this.electricData);
       this.drawLine("line2", "出厂水流量", "m³", this.waterData);
-      this.drawLine("line3", "温泉厂内清水库水位", "m³", this.WQQSK1Data);
-      this.drawLine("line4", "温泉厂外清水库水位", "m³", this.WQQSK2Data);
+      this.drawLine("line3", "温泉厂内清水库水位", "m", this.WQQSK1Data);
+      this.drawLine("line4", "温泉厂外清水库水位", "m", this.WQQSK2Data);
     },
     drawLine(dom, text, formatter, data) {
       let myChart = this.echarts.init(document.getElementById(dom));

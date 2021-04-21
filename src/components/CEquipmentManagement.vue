@@ -10,11 +10,8 @@
       <div class="line">编号：{{equipmentManagement.deviceNumber}}</div>
       <div class="line">设备：{{equipmentManagement.deviceName}}</div>
       <div class="line" v-if="equipmentManagement.parentId">所属：{{parent.deviceName}}</div>
-      <div
-        class="line"
-        v-if="!equipmentManagement.parentId"
-      >经纬：{{equipmentManagement.longitude}} / {{equipmentManagement.latitude}}</div>
-      <div class="line" v-if="!equipmentManagement.parentId">海拔：{{equipmentManagement.altitude}}米</div>
+      <div class="line">经纬：{{equipmentManagement.longitude}} / {{equipmentManagement.latitude}}</div>
+      <div class="line">海拔：{{equipmentManagement.altitude}}米</div>
       <div class="line" v-if="equipmentManagement.state">运行状态：设备异常</div>
       <div class="line" v-else>状态：正常运行</div>
     </div>
@@ -80,7 +77,7 @@ export default {
 <style scoped>
 .equipment {
   width: 100%;
-  height: 18vh;
+  height: 20vh;
   border: 0.1vw solid black;
   border-width: 0.1vw 0;
   display: flex;

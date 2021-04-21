@@ -90,10 +90,10 @@ export default {
       }
       this.drawLine("line1", "耗电量", "kw.h", this.electricData);
       this.drawLine("line2", "出厂水流量", "m³", this.waterData);
-      this.drawLine("line4", "天海清水库水位", "m³", this.QSKData);
-      this.drawLine("line3", "天海上位池水位", "m³", this.SWCData);
-      this.drawLine("line5", "天海一水库水位", "m³", this.TH1Data);
-      this.drawLine("line6", "天海二水库水位", "m³", this.TH2Data);
+      this.drawLine("line4", "天海清水库水位", "m", this.QSKData);
+      this.drawLine("line3", "天海上位池水位", "m", this.SWCData);
+      this.drawLine("line5", "天海一水库水位", "m", this.TH1Data);
+      this.drawLine("line6", "天海二水库水位", "m", this.TH2Data);
     },
     drawLine(dom, text, formatter, data) {
       let myChart = this.echarts.init(document.getElementById(dom));
