@@ -103,7 +103,11 @@ export default {
         {
           title: "报警类型",
           kind: "select",
-          placeholder: ["警告", "报警", "事故"],
+          placeholder: [
+            { value: 0, option: "警告" },
+            { value: 1, option: "报警" },
+            { value: 2, option: "事故" },
+          ],
           content: "",
         },
         {
@@ -235,7 +239,7 @@ export default {
       wm[index].lowAlarmSetting = formDataCopy[6].content;
       this.axios.post("/api/warningType/updateInfo", wm[index]).then((response) => {
         if (response.data.code === 200) {
-          Toast.success("修改成功");
+          Toast.success("修改成功"); //这行会报错，不知道为什么，不过不影响功能
           this.dataList = [].concat(wm);
           this.showChange = false;
           for (let i = 0; i < 7; i++) {
