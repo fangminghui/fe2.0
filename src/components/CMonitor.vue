@@ -1,5 +1,5 @@
 <template>
-  <div class="cmonitor">
+  <div class="cmonitor" v-if="cmonitor.plcData.length!==0">
     <div class="cmonitor_title">{{cmonitor.device_name}}</div>
     <div>
       <list v-if="cmonitor.plcData" finished-text="没有更多了">
@@ -66,6 +66,7 @@ export default {
   font-size: 4vw;
   display: flex;
   justify-content: center;
+  text-align: center;
 }
 .green {
   width: 5vw;

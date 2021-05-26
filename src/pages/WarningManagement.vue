@@ -207,7 +207,12 @@ export default {
             Toast.success("删除成功");
             this.showDelete = false;
             this.dataList.splice(this.dataIndex, 1);
+          } else {
+            Toast.fail("删除失败");
           }
+        })
+        .catch(() => {
+          Toast.fail("删除失败");
         });
     },
     changeEle(obj, index) {
@@ -237,16 +242,23 @@ export default {
       wm[index].content = formDataCopy[4].content;
       wm[index].highAlarmSetting = formDataCopy[5].content;
       wm[index].lowAlarmSetting = formDataCopy[6].content;
-      this.axios.post("/api/warningType/updateInfo", wm[index]).then((response) => {
-        if (response.data.code === 200) {
-          Toast.success("修改成功"); //这行会报错，不知道为什么，不过不影响功能
-          this.dataList = [].concat(wm);
-          this.showChange = false;
-          for (let i = 0; i < 7; i++) {
-            this.formData[i].content = "";
+      this.axios
+        .post("/api/warningType/updateInfo", wm[index])
+        .then((response) => {
+          if (response.data.code === 200) {
+            Toast.success("修改成功"); //这行会报错，不知道为什么，不过不影响功能
+            this.dataList = [].concat(wm);
+            this.showChange = false;
+            for (let i = 0; i < 7; i++) {
+              this.formData[i].content = "";
+            }
+          } else {
+            Toast.fail("修改失败");
           }
-        }
-      });
+        })
+        .catch(() => {
+          Toast.fail("修改失败");
+        });
     },
     addEle() {
       this.showAdd = true;
@@ -263,18 +275,25 @@ export default {
       wm.content = formDataCopy[4].content;
       wm.highAlarmSetting = formDataCopy[5].content;
       wm.lowAlarmSetting = formDataCopy[6].content;
-      this.axios.post("/api/warningType/add", wm).then((response) => {
-        if (response.data.code === 200) {
-          Toast.success("添加成功");
-          this.showAdd = false;
-          for (let i = 0; i < 7; i++) {
-            this.formData[i].content = "";
+      this.axios
+        .post("/api/warningType/add", wm)
+        .then((response) => {
+          if (response.data.code === 200) {
+            Toast.success("添加成功");
+            this.showAdd = false;
+            for (let i = 0; i < 7; i++) {
+              this.formData[i].content = "";
+            }
+            setTimeout(() => {
+              this.getData();
+            }, 1000);
+          } else {
+            Toast.fail("添加失败");
           }
-          setTimeout(() => {
-            this.getData();
-          }, 1000);
-        }
-      });
+        })
+        .catch(() => {
+          Toast.fail("添加失败");
+        });
     },
   },
 };

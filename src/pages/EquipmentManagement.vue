@@ -287,7 +287,12 @@ export default {
             Toast.success("删除成功");
             this.showDelete = false;
             this.dataList.splice(this.dataIndex, 1);
+          } else {
+            Toast.fail("删除失败");
           }
+        })
+        .catch(() => {
+          Toast.fail("删除失败");
         });
     },
     changeCancel() {
@@ -307,13 +312,20 @@ export default {
       em[index].state = formDataCopy[5].value;
       em[index].typeId = formDataCopy[6].value;
       em[index].parentId = formDataCopy[7].value;
-      this.axios.post("/api/equipment/updateInfo", em[index]).then((response) => {
-        if (response.data.code === 200) {
-          Toast.success("修改成功");
-          this.dataList = [].concat(em);
-          this.showChange = false;
-        }
-      });
+      this.axios
+        .post("/api/equipment/updateInfo", em[index])
+        .then((response) => {
+          if (response.data.code === 200) {
+            Toast.success("修改成功");
+            this.dataList = [].concat(em);
+            this.showChange = false;
+          } else {
+            Toast.fail("修改失败");
+          }
+        })
+        .catch(() => {
+          Toast.fail("修改失败");
+        });
     },
     addEle() {
       for (let i = 0; i < 8; i++) {
@@ -336,18 +348,25 @@ export default {
       em.state = formDataCopy[5].value;
       em.typeId = formDataCopy[6].value;
       em.parentId = formDataCopy[7].value;
-      this.axios.post("/api/equipment/add", em).then((response) => {
-        if (response.data.code === 200) {
-          Toast.success("添加成功");
-          this.showAdd = false;
-          for (let i = 0; i < 8; i++) {
-            this.formData[i].content = "";
+      this.axios
+        .post("/api/equipment/add", em)
+        .then((response) => {
+          if (response.data.code === 200) {
+            Toast.success("添加成功");
+            this.showAdd = false;
+            for (let i = 0; i < 8; i++) {
+              this.formData[i].content = "";
+            }
+            setTimeout(() => {
+              this.getData();
+            }, 1000);
+          } else {
+            Toast.success("添加失败");
           }
-          setTimeout(() => {
-            this.getData();
-          }, 1000);
-        }
-      });
+        })
+        .catch(() => {
+          Toast.fail("修改失败");
+        });
     },
   },
 };

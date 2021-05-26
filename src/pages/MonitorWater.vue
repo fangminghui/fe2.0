@@ -2,8 +2,8 @@
   <list :finished="true" finished-text="没有更多了">
     <cell v-for="(item,index) in dataList" :key="index">
       <div class="waterCell">
-        <div>{{item.device_name}}</div>
-        <div>{{item.plcData.value}}&nbsp;{{item.plcData.unit}}</div>
+        <div v-if="item.device_name">{{item.device_name}}</div>
+        <div v-if="item.plcData">{{item.plcData.value}}&nbsp;{{item.plcData.unit}}</div>
       </div>
     </cell>
   </list>

@@ -129,7 +129,12 @@ export default {
             this.getData();
             this.showDelete = false;
             this.dataList.splice(this.dataIndex, 1);
+          } else {
+            Toast.fail("删除失败");
           }
+        })
+        .catch(() => {
+          Toast.fail("删除失败");
         });
     },
     changeEle(obj, index) {
@@ -165,6 +170,8 @@ export default {
             for (let i = 0; i < 5; i++) {
               this.formData[i].content = "";
             }
+          } else {
+            Toast.fail("修改失败");
           }
         })
         .catch(() => {
@@ -196,6 +203,8 @@ export default {
             setTimeout(() => {
               this.getData();
             }, 1000);
+          } else {
+            Toast.fail("添加失败");
           }
         })
         .catch(() => {

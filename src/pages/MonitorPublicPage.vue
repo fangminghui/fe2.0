@@ -7,7 +7,7 @@
     finished-text="没有更多了"
     @load="getMore"
   >
-    <c-monitor v-for="(cmonitor, index) in dataList" :key="index" :cmonitor="cmonitor" />
+    <c-monitor v-for="(cmonitor, index) in dataList" :key="index" :cmonitor="cmonitor"></c-monitor>
   </list>
 </template>
 <script>

@@ -71,8 +71,14 @@ export default {
       };
       this.options.push(waterOption);
       for (let item of response) {
+        let text = "";
+        if (item.latitude && item.longitude) {
+          text = `${item.deviceName}: ${item.latitude}/${item.longitude}`;
+        } else {
+          text = item.deviceName;
+        }
         let obj = {
-          text: item.deviceName,
+          text: text,
           value: item.id,
         };
         this.options.push(obj);

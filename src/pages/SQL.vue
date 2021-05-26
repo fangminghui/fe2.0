@@ -178,7 +178,12 @@ export default {
             Toast.success("删除成功");
             this.showDelete = false;
             this.dataList.splice(this.dataIndex, 1);
+          } else {
+            Toast.fail("删除失败");
           }
+        })
+        .catch(() => {
+          Toast.fail("删除失败");
         });
     },
     addEle() {
@@ -205,18 +210,25 @@ export default {
       em.dataType = formDataCopy[1].value;
       em.description = formDataCopy[2].content;
       em.unit = formDataCopy[3].content;
-      this.axios.post("/api/column_mapping/add", em).then((response) => {
-        if (response.data.code === 200) {
-          Toast.success("添加成功");
-          this.showAdd = false;
-          for (let i = 0; i < this.formData.length; i++) {
-            this.formData[i].content = "";
+      this.axios
+        .post("/api/column_mapping/add", em)
+        .then((response) => {
+          if (response.data.code === 200) {
+            Toast.success("添加成功");
+            this.showAdd = false;
+            for (let i = 0; i < this.formData.length; i++) {
+              this.formData[i].content = "";
+            }
+            setTimeout(() => {
+              this.getData();
+            }, 1000);
+          } else {
+            Toast.fail("添加失败");
           }
-          setTimeout(() => {
-            this.getData();
-          }, 1000);
-        }
-      });
+        })
+        .catch(() => {
+          Toast.fail("添加失败");
+        });
     },
     changeEle(obj, index) {
       this.dataIndex = index;
@@ -239,13 +251,20 @@ export default {
       em[index].dataType = formDataCopy[1].value;
       em[index].description = formDataCopy[2].content;
       em[index].unit = formDataCopy[3].content;
-      this.axios.post("/api/column_mapping/update", em[index]).then((response) => {
-        if (response.data.code === 200) {
-          Toast.success("修改成功");
-          this.dataList = [].concat(em);
-          this.showChange = false;
-        }
-      });
+      this.axios
+        .post("/api/column_mapping/update", em[index])
+        .then((response) => {
+          if (response.data.code === 200) {
+            Toast.success("修改成功");
+            this.dataList = [].concat(em);
+            this.showChange = false;
+          } else {
+            Toast.fail("修改失败");
+          }
+        })
+        .catch(() => {
+          Toast.fail("修改失败");
+        });
     },
   },
 };
