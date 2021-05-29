@@ -91,33 +91,22 @@ export default {
       let points = [];
       let line;
       let pipelines;
-      let pageSize;
-      let flag = false;
-      await this.axios.get("api/pipeline/list?pageNum=1&pageSize=1").then((response) => {
-        pageSize = response.data.data.total;
-      });
-      await this.axios.get("api/pipeline/list?pageNum=1&pageSize=" + pageSize).then((response) => {
-        pipelines = response.data.data.resultList;
-      });
-      for (let pipeline of pipelines) {
-        await this.axios.get("/api/pipe_point/list?pipelineId=" + pipeline.id).then((response) => {
-          let data = response.data.data;
-          if (data.length >= 2) {
-            flag = true;
-            for (let pipe of data) {
-              points.push(new T.LngLat(pipe.latitude, pipe.longitude));
-            }
-            line = new T.Polyline(points);
-            map.addOverLay(line);
-            points = [];
+      await this.axios.get("api/gis/pipe/list").then((response) => {
+        pipelines = response.data.data;
+        for (let pipeline of pipelines) {
+          for (let node of pipeline.nodes) {
+            points.push(new T.LngLat(node[1], node[0]));
           }
-        });
-      }
-      if (flag) {
-        let parent = document.getElementsByClassName("tdt-pane tdt-map-pane")[0];
-        let child = document.getElementsByClassName("tdt-overlay-pane")[0].lastElementChild;
-        parent.appendChild(child);
-      }
+          line = new T.Polyline(points);
+          line.setColor(pipeline.lineColor);
+          line.setWeight(pipeline.lineWeight);
+          map.addOverLay(line);
+          points = [];
+        }
+      });
+      let parent = document.getElementsByClassName("tdt-pane tdt-map-pane")[0];
+      let child = document.getElementsByClassName("tdt-overlay-pane")[0].lastElementChild;
+      parent.appendChild(child);
       setTimeout(() => (this.load = false), 1000);
     },
 
