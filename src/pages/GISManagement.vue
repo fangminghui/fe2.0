@@ -1,171 +1,95 @@
 <template>
-  <div>
-    <div class="back"></div>
-    <field
-      v-model="fieldValue"
-      input-align="right"
-      is-link
-      readonly
-      label="管线名称"
-      placeholder="请选择管线名"
-      @click="show = true"
-      size="large"
-      style="z-index:2;position:relative;"
-    />
-    <popup v-model:show="show" round position="bottom">
-      <loading class="addressLoading" v-if="loading" size="40px" color="#1989fa">加载中...</loading>
-      <cascader
-        v-model="cascaderValue"
-        title="请选择管线名"
-        :options="options"
-        @change="change"
-        @close="show = false"
-        @finish="onFinish"
-      />
-    </popup>
-    <div v-if="noDataImg" class="nodata">
-      <img src="../assets/svg/noData.svg" class="noDataImg" />
-      <div>暂无数据</div>
-    </div>
-    <all-line v-if="allLine" @finish="finish" @nodata="nodata" />
-    <one-line v-if="oneLine" :lineId="lineId" @finish="finish" @nodata="nodata" />
-  </div>
+  <list :finished="true" finished-text="没有更多了">
+    <cell>
+      <div class="waterCell">
+        <div style="color:#323233;">序号</div>
+        <div>管线名</div>
+      </div>
+    </cell>
+    <collapse v-model="activeNames">
+      <collapse-item v-for="(item,index) in dataList" :key="index">
+        <template #title>
+          <div class="waterCell">
+            <div>{{index+1}}</div>
+            <div>{{item.name}}</div>
+          </div>
+        </template>
+        <list class="gislist">
+          <div class="gislist">&emsp;&emsp;&emsp;管线长度：{{item.length}}米</div>
+          <div class="gislist">&emsp;&emsp;&emsp;管线材质：{{item.texture}}</div>
+          <div class="gislist">&emsp;&emsp;&emsp;管径：{{item.diameter}}厘米</div>
+          <div class="gislist">&emsp;&emsp;&emsp;厂商：{{item.manufacturer}}</div>
+          <div class="gislist">
+            &emsp;&emsp;&emsp;管线节点:
+            <br />
+            <div v-for="(node,indexx) in item.nodes" :key="indexx">
+              &emsp;&emsp;&emsp;
+              <span class="xuhao">{{indexx+1}}</span>
+              &emsp;{{node[0]}}&emsp;/&emsp;{{node[0]}}
+            </div>
+          </div>
+        </list>
+      </collapse-item>
+    </collapse>
+  </list>
 </template>
-
 <script>
-import { Field, Popup, Cascader, loading } from "vant";
-import AllLine from "./AllLine.vue";
-import OneLine from "./OneLine.vue";
+import { List, Cell, Collapse, CollapseItem } from "vant";
 export default {
   components: {
-    Cascader,
-    Field,
-    Popup,
-    loading,
-    OneLine,
-    AllLine,
+    List,
+    Cell,
+    Collapse,
+    CollapseItem,
   },
   created() {
-    this.getOptions();
+    this.$emit("loading");
+  },
+  mounted() {
+    this.getData();
   },
   data() {
     return {
-      show: true,
-      fieldValue: "",
-      cascaderValue: "",
-      // 选项列表，children 代表子选项，支持多级嵌套
-      options: [],
-      loading: true,
-      allLine: false,
-      oneLine: false,
-      noDataImg: false,
-      lineId: 0,
+      dataList: [],
+      activeNames: ["0"],
     };
   },
   methods: {
-    async getOptions() {
-      this.options = [];
-      let pageSize;
-      let pipelines;
-      await this.axios.get("api/pipeline/list?pageNum=1&pageSize=1").then((response) => {
-        pageSize = response.data.data.total;
+    async getData() {
+      await this.axios.get("api/gis/pipe/list").then((res) => {
+        let data = res.data.data;
+        if (data.length > 0) {
+          this.dataList = data;
+          this.$emit("finish");
+        } else {
+          this.$emit("nodata");
+        }
       });
-      await this.axios.get("api/pipeline/list?pageNum=1&pageSize=" + pageSize).then((response) => {
-        pipelines = response.data.data.resultList;
-      });
-      let allLine = {
-        text: "所有管线",
-        value: "all",
-      };
-      this.options.push(allLine);
-      for (let pipeline of pipelines) {
-        let obj = {
-          text: pipeline.name,
-          value: pipeline.id,
-        };
-        this.options.push(obj);
-      }
-      this.loading = false;
-    },
-    onFinish({ selectedOptions, value }) {
-      this.show = false;
-      this.fieldValue = selectedOptions.map((option) => option.text).join("/");
-      let first = this.allLine || this.oneLine;
-      if (value === "all") {
-        this.allLine = true;
-        this.oneLine = false;
-      } else {
-        this.allLine = false;
-        this.oneLine = true;
-        this.lineId = value;
-      }
-      if (!first) {
-        this.$emit("loading");
-      }
-    },
-    finish() {
-      this.$emit("finish");
-      this.noDataImg = false;
-      this.getOptions();
-    },
-    nodata() {
-      this.$emit("finish");
-      this.noDataImg = true;
-      this.getOptions();
     },
   },
 };
 </script>
 
-<style>
-.van-swipe__track {
-  height: 30vh;
+<style scoped>
+.waterCell {
+  display: flex;
+  font-size: 4vw;
 }
-.van-swipe {
-  overflow: auto;
-}
-.van-cascader__options {
-  height: 100%;
-}
-.addressLoading {
-  position: absolute;
-  width: 100%;
-  height: 70%;
-  margin-top: 30%;
-  background: white;
-  z-index: 2007;
+.waterCell > div:first-child {
+  flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  color: #1296db;
 }
-.nodata {
-  height: 100vh;
-  width: 100vw;
+.waterCell > div {
+  flex: 3;
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  background-color: #f3f3f3;
 }
-.back {
-  height: 100vh;
-  width: 100vw;
-  position: absolute;
-  top: 0;
-  background-color: #f3f3f3;
-  z-index: -1;
+.xuhao {
+  color: #1296db;
 }
-.noDataImg {
-  width: 30vw;
-  margin-bottom: 5vw;
-}
-.van-field {
-  background-color: #f3f3f3;
-  border-bottom: 0.1vw solid black;
-}
-.van-cell::after {
-  border-bottom: 0;
+.gislist {
+  color: black;
 }
 </style>

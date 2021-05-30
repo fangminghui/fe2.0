@@ -10,21 +10,22 @@
       @load="getMore"
     >
       <c-warning-message
-        v-for="(warningMessage, index) in dataList"
-        :key="index"
+        v-for="(warningMessage) in dataList"
+        :key="warningMessage.id"
         :warningMessage="warningMessage"
         class="CWarningMessage"
+        @confirm="confirm"
       />
     </list>
   </pull-refresh>
 </template>
 
 <script>
-import { List, PullRefresh } from "vant";
+import { List, PullRefresh, Toast } from "vant";
 import CWarningMessage from "../components/CWarningMessage";
 import publicFunc from "../publicFunc";
 import CSelectBar from "../components/CSelectBar";
-
+import axios from "axios";
 export default {
   components: {
     List,
@@ -132,6 +133,27 @@ export default {
         this.getData();
       }
     }, //根据选择处理数据
+    confirm(id) {
+      axios
+        .post(`/api/warning/confirm?warningId=${id}`)
+        .then((res) => {
+          if (res.data.message === "操作成功") {
+            this.dataList = this.dataList.filter((e) => e.id !== id);
+            Toast.success("操作成功");
+          } else {
+            Toast.fail("操作失败");
+          }
+        })
+        .catch(() => {
+          Toast.fail("操作失败");
+        });
+      // let newDataList = [].concat(this.dataList);
+      // let messsage = newDataList.find((e) => e.id === id);
+      // messsage.confirmStatus = 1;
+      // newDataList = newDataList.filter((e) => e.id !== id);
+      // newDataList.push(messsage);
+      // this.dataList = newDataList;
+    },
   },
 };
 </script>

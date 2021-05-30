@@ -1,5 +1,7 @@
 <template>
-  <div :class="['warning', 'warning'+warningMessage.type]">
+  <div
+    :class="['warning', 'warning'+warningMessage.type,'id'+warningMessage.id,'confirm'+warningMessage.confirmStatus]"
+  >
     <div class="left">
       <div class="svgBackground">
         <div v-if="warningMessage.type === 0">
@@ -37,12 +39,39 @@
         </div>
       </div>
     </div>
+    <div class="overright">
+      <div class="confirm" @click="confirm">确认</div>
+    </div>
   </div>
 </template>
 
 <script>
+import throttle from "lodash/throttle";
+
 export default {
   props: { warningMessage: Object },
+  mounted() {
+    let ele = document.getElementsByClassName("id" + this.warningMessage.id)[0];
+    ele.addEventListener("touchend", this.touchHandle);
+  },
+  methods: {
+    touchHandle: throttle(function () {
+      setTimeout(() => {
+        let ele = document.getElementsByClassName("id" + this.warningMessage.id)[0];
+        let width = ele.scrollWidth;
+        let clientWidth = document.documentElement.clientWidth;
+        let left = ele.scrollLeft;
+        if (left > width * 0.1) {
+          ele.scrollLeft = width - clientWidth;
+        } else {
+          ele.scrollLeft = 0;
+        }
+      }, 200);
+    }, 500),
+    confirm() {
+      this.$emit("confirm", this.warningMessage.id);
+    },
+  },
 };
 </script>
 
@@ -54,16 +83,40 @@ export default {
   border-width: 0.1vw 0;
   display: flex;
   box-sizing: border-box;
+  overflow: scroll;
+}
+/* .warning0 {
+  background: rgba(204, 204, 204, 0.5);
+} */
+.confirm1 {
+  background: rgba(204, 204, 204, 0.5) !important;
 }
 .warning0 {
-  background: rgba(204, 204, 204, 0.5);
+  background: rgba(241, 145, 73, 0.3);
 }
 .warning1 {
-  background: rgba(241, 145, 73, 0.5);
+  background: rgba(230, 65, 0, 0.5);
 }
 .warning2 {
-  background: rgba(230, 0, 18, 0.5);
+  background: rgba(255, 0, 0, 0.7);
 }
+.overright {
+  flex: none;
+  width: 20vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.confirm {
+  width: 20vw;
+  height: 100%;
+  background: #99ccff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
 .left {
   width: 20vw;
   height: 100%;
@@ -71,6 +124,7 @@ export default {
   justify-content: center;
   align-items: center;
   margin: 0 2vw;
+  flex: none;
 }
 .svgBackground {
   width: 15vw;
@@ -92,6 +146,8 @@ export default {
   text-align: center;
 }
 .right {
+  flex: none;
+
   width: 76vw;
   display: flex;
   justify-content: center;
