@@ -22,7 +22,7 @@
       <div class="rightInfos">
         <div class="rightInfo">
           <img src="../assets/svg/time.svg" alt class="timeSvg" />
-          {{ warningMessage.createTime.split(" ")[0] }}
+          {{ warningMessage.createTime}}
         </div>
         <div class="rightInfo">
           <div>&nbsp;&nbsp;</div>
@@ -98,7 +98,7 @@ export default {
   background: rgba(230, 65, 0, 0.5);
 }
 .warning2 {
-  background: rgba(255, 0, 0, 0.7);
+  background: rgba(255, 0, 0, 1);
 }
 .overright {
   flex: none;
@@ -147,7 +147,6 @@ export default {
 }
 .right {
   flex: none;
-
   width: 76vw;
   display: flex;
   justify-content: center;
@@ -159,10 +158,10 @@ export default {
   flex-wrap: wrap;
 }
 .rightInfo {
-  margin: 0.5vh 0;
-  flex: 1 1 33.33%;
+  margin: 0.5vh 1vw 0.5vh 0;
   display: flex;
   align-items: center;
+  min-width: 30%;
 }
 .timeSvg {
   width: 5vw;
