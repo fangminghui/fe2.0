@@ -1,18 +1,18 @@
 <template>
   <div
-    :class="['warning', 'warning'+warningMessage.type,'id'+warningMessage.id,'confirm'+warningMessage.confirmStatus]"
+    :class="['warning', 'warning'+warningMessageItem.type,'id'+warningMessageItem.id,'confirm'+warningMessageItem.confirmStatus]"
   >
     <div class="left">
       <div class="svgBackground">
-        <div v-if="warningMessage.type === 0">
+        <div v-if="warningMessageItem.type === 0">
           <img src="../assets/svg/warning1.svg" alt class="warningSvg" />
           <div class="warningText">警告</div>
         </div>
-        <div v-else-if="warningMessage.type === 1">
+        <div v-else-if="warningMessageItem.type === 1">
           <img src="../assets/svg/warning2.svg" alt class="warningSvg" />
           <div class="warningText">报警</div>
         </div>
-        <div v-else-if="warningMessage.type === 2">
+        <div v-else-if="warningMessageItem.type === 2">
           <img src="../assets/svg/warning3.svg" alt class="warningSvg" />
           <div class="warningText">事故</div>
         </div>
@@ -22,24 +22,22 @@
       <div class="rightInfos">
         <div class="rightInfo">
           <img src="../assets/svg/time.svg" alt class="timeSvg" />
-          {{ warningMessage.createTime}}
+          {{ warningMessageItem.createTime}}
         </div>
         <div class="rightInfo">
-          <div>&nbsp;&nbsp;</div>
           <img src="../assets/svg/address.svg" alt class="timeSvg" />
-          {{ warningMessage.alarmSite }}
-        </div>
-        <div class="rightInfo">
+          {{ warningMessageItem.alarmSite }}
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
           <img src="../assets/svg/equipment.svg" alt class="timeSvg" />
-          {{ warningMessage.alarmDevice }}
+          {{ warningMessageItem.alarmDevice }}
         </div>
         <div class="rightInfo">
           <img src="../assets/svg/info.svg" alt class="timeSvg" />
-          {{ warningMessage.content }}
+          {{ warningMessageItem.content }}
         </div>
       </div>
     </div>
-    <div class="overright">
+    <div class="overright" v-if="warningMessageItem.confirmStatus===0">
       <div class="confirm" @click="confirm">确认</div>
     </div>
   </div>
@@ -47,17 +45,22 @@
 
 <script>
 import throttle from "lodash/throttle";
+import axios from "axios";
+import { Toast } from "vant";
 
 export default {
   props: { warningMessage: Object },
+  data() {
+    return { warningMessageItem: this.warningMessage };
+  },
   mounted() {
-    let ele = document.getElementsByClassName("id" + this.warningMessage.id)[0];
+    let ele = document.getElementsByClassName("id" + this.warningMessageItem.id)[0];
     ele.addEventListener("touchend", this.touchHandle);
   },
   methods: {
     touchHandle: throttle(function () {
       setTimeout(() => {
-        let ele = document.getElementsByClassName("id" + this.warningMessage.id)[0];
+        let ele = document.getElementsByClassName("id" + this.warningMessageItem.id)[0];
         let width = ele.scrollWidth;
         let clientWidth = document.documentElement.clientWidth;
         let left = ele.scrollLeft;
@@ -68,8 +71,29 @@ export default {
         }
       }, 200);
     }, 500),
+    // confirm() {
+    //   this.$emit("confirm", this.warningMessageItem.id);
+    // },
     confirm() {
-      this.$emit("confirm", this.warningMessage.id);
+      axios
+        .post(`/api/warning/confirm?warningId=${this.warningMessageItem.id}`)
+        .then((res) => {
+          if (res.data.message === "操作成功") {
+            this.warningMessageItem.confirmStatus = 1;
+            Toast.success("操作成功");
+          } else {
+            Toast.fail("操作失败");
+          }
+        })
+        .catch(() => {
+          Toast.fail("操作失败");
+        });
+      // let newDataList = [].concat(this.dataList);
+      // let messsage = newDataList.find((e) => e.id === id);
+      // messsage.confirmStatus = 1;
+      // newDataList = newDataList.filter((e) => e.id !== id);
+      // newDataList.push(messsage);
+      // this.dataList = newDataList;
     },
   },
 };
@@ -78,7 +102,7 @@ export default {
 <style scoped>
 .warning {
   width: 100vw;
-  height: 10vh;
+  height: 15vh;
   border: 0.1vw solid black;
   border-width: 0.1vw 0;
   display: flex;
@@ -156,13 +180,12 @@ export default {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  font-size: 4vw;
 }
 .rightInfo {
   margin: 0.5vh 1vw 0.5vh 0;
   display: flex;
   align-items: center;
-  min-width: 30%;
+  min-width: 60%;
 }
 .timeSvg {
   width: 5vw;
