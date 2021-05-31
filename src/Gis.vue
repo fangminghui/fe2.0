@@ -56,17 +56,20 @@ export default {
       this.initData(map, T);
     },
     initData(map, T) {
-      this.axios.get("api/equipment/zoom?zoomLevel=14").then((response) => {
+      let icon = new T.Icon();
+      icon.setIconUrl("./mark.svg");
+      icon.setIconSize(new T.Point(25, 41));
+      this.axios.get("api/gis/marker/list").then((response) => {
         let data = response.data.data;
         this.data = response.data.data;
         for (let i = 0; i < data.length; i++) {
           let marker = new T.Marker(new T.LngLat(data[i].longitude, data[i].latitude)); // 创建标注
-          marker.setOpacity(0.9);
+          marker.setIcon(icon);
           map.addOverLay(marker);
           let label = new T.Label({
-            text: data[i].deviceName,
+            text: data[i].name,
             position: marker.getLngLat(),
-            offset: new T.Point(0, -30),
+            offset: new T.Point(0, -20),
           });
           map.addOverLay(label);
           label.setBackgroundColor("#eee");

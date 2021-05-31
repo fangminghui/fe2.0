@@ -156,6 +156,7 @@ export default {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  font-size: 4vw;
 }
 .rightInfo {
   margin: 0.5vh 1vw 0.5vh 0;

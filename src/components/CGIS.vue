@@ -1,6 +1,6 @@
 <template>
   <div class="cgis">
-    <div class="plctitle">{{info.deviceName}}</div>
+    <div class="plctitle">{{info.name}}</div>
     <loading size="40px" v-if="loading" class="loading">加载中...</loading>
     <div v-else>
       <div v-if="plcDataArray.length===0" class="noData">暂无数据</div>
