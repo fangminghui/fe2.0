@@ -24,7 +24,7 @@ export default {
   props: { info: Object },
   watch: {
     info() {
-      this.getData(this.info.id);
+      this.getData(this.info.equipmentId);
     },
   },
   data() {

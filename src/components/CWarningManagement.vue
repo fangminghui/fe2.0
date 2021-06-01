@@ -1,25 +1,25 @@
 <template>
   <div :class="['warning','id'+id]">
     <div class="left">
-      <div v-if="WarningManagement.typeName === '警告'">
+      <div v-if="WarningManagement.type === 0">
         <img src="../assets/svg/warning1.svg" alt class="warningSvg" />
         <div class="warningText">警告</div>
       </div>
-      <div v-else-if="WarningManagement.typeName === '报警'">
+      <div v-else-if="WarningManagement.type === 1">
         <img src="../assets/svg/warning2.svg" alt class="warningSvg" />
         <div class="warningText">报警</div>
       </div>
-      <div v-else-if="WarningManagement.typeName === '事故'">
+      <div v-else-if="WarningManagement.type === 2">
         <img src="../assets/svg/warning3.svg" alt class="warningSvg" />
         <div class="warningText">事故</div>
       </div>
     </div>
     <div class="middle">
       <div class="line">
-        <div class="column">设备编号：{{WarningManagement.deviceId}}</div>
+        <div class="column">字段映射Id：{{WarningManagement.columnId}}</div>
         <div class="column">地点：{{WarningManagement.site}}</div>
       </div>
-      <div class="line">数据字段：{{WarningManagement.fieldName}}</div>
+      <div class="line">所属设备：{{WarningManagement.deviceName}}</div>
       <div class="line">
         <div class="column">上临界点：{{WarningManagement.highAlarmSetting}}</div>
         <div class="column">下临界点：{{WarningManagement.lowAlarmSetting}}</div>

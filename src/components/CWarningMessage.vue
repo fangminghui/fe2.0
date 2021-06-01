@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="overright" v-if="warningMessageItem.confirmStatus===0">
+    <div class="overright">
       <div class="confirm" @click="confirm">确认</div>
     </div>
   </div>
@@ -142,7 +142,7 @@ export default {
 }
 
 .left {
-  width: 20vw;
+  width: 25vw;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -171,7 +171,7 @@ export default {
 }
 .right {
   flex: none;
-  width: 76vw;
+  width: 71vw;
   display: flex;
   justify-content: center;
   align-items: center;

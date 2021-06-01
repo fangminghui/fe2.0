@@ -78,9 +78,9 @@ export default {
           ],
         },
         {
-          title: "设备编号",
+          title: "所属设备",
           kind: "search",
-          content: "输入设备编号",
+          content: "输入所属设备名",
         },
         {
           title: "报警地点",
@@ -182,10 +182,10 @@ export default {
     }, //加载更多
     select(title, content) {
       if (title === "报警类型") {
-        this.para.typeName = content.text;
+        this.para.type = content.value;
         this.getData();
-      } else if (title === "设备编号") {
-        this.para.deviceId = content;
+      } else if (title === "所属设备") {
+        this.para.deviceName = content;
         this.getData();
       } else if (title === "报警地点") {
         this.para.site = content;
