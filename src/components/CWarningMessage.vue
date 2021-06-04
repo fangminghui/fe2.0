@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="overright">
+    <div class="overright" v-if="warningMessageItem.confirmStatus===0">
       <div class="confirm" @click="confirm">确认</div>
     </div>
   </div>

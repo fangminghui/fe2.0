@@ -31,8 +31,7 @@ import publicFunc from "../publicFunc";
 import qs from "qs";
 import CConfirm from "../components/CConfirm.vue";
 import CForm from "../components/CForm.vue";
-import { Toast } from "vant";
-import { List, PullRefresh } from "vant";
+import { List, PullRefresh, Toast } from "vant";
 import CSelectBar from "../components/CSelectBar";
 
 export default {
@@ -111,15 +110,15 @@ export default {
           content: "",
         },
         {
-          title: "设备编号",
+          title: "字段映射Id",
           kind: "search",
-          placeholder: "输入设备编号",
+          placeholder: "输入字段映射Id",
           content: "",
         },
         {
-          title: "数据字段",
+          title: "所属设备",
           kind: "search",
-          placeholder: "输入数据字段",
+          placeholder: "输入所属设备",
           content: "",
         },
         {
@@ -218,8 +217,8 @@ export default {
     changeEle(obj, index) {
       this.dataIndex = index;
       this.formData[0].content = obj.typeName;
-      this.formData[1].content = obj.deviceId;
-      this.formData[2].content = obj.fieldName;
+      this.formData[1].content = obj.columnId;
+      this.formData[2].content = obj.deviceName;
       this.formData[3].content = obj.site;
       this.formData[4].content = obj.content;
       this.formData[5].content = obj.highAlarmSetting;
@@ -236,8 +235,8 @@ export default {
       let index = this.dataIndex;
       let wm = this.dataList.slice();
       wm[index].typeName = formDataCopy[0].content;
-      wm[index].deviceId = formDataCopy[1].content;
-      wm[index].fieldName = formDataCopy[2].content;
+      wm[index].columnId = formDataCopy[1].content;
+      wm[index].deviceName = formDataCopy[2].content;
       wm[index].site = formDataCopy[3].content;
       wm[index].content = formDataCopy[4].content;
       wm[index].highAlarmSetting = formDataCopy[5].content;
@@ -269,8 +268,15 @@ export default {
     addConfirm(formDataCopy) {
       let wm = {};
       wm.typeName = formDataCopy[0].content;
-      wm.deviceId = formDataCopy[1].content;
-      wm.fieldName = formDataCopy[2].content;
+      if (formDataCopy[0].content === "警告") {
+        wm.type = 0;
+      } else if (formDataCopy[0].content === "报警") {
+        wm.type = 1;
+      } else if (formDataCopy[0].content === "事故") {
+        wm.type = 2;
+      }
+      wm.columnId = formDataCopy[1].content;
+      wm.deviceName = formDataCopy[2].content;
       wm.site = formDataCopy[3].content;
       wm.content = formDataCopy[4].content;
       wm.highAlarmSetting = formDataCopy[5].content;
