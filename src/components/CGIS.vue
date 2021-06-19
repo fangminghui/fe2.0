@@ -3,14 +3,15 @@
     <div class="plctitle">{{info.name}}</div>
     <loading size="40px" v-if="loading" class="loading">加载中...</loading>
     <div v-else>
-      <div v-if="plcDataArray.length===0" class="noData">暂无数据</div>
+      <div class="title">经纬度：{{info.longitude}}&nbsp;/&nbsp;{{info.latitude}}</div>
+      <!-- <div v-if="plcDataArray.length===0" class="noData">暂无数据</div>
       <div v-else class="plcData">
         <div v-for="i in length" :key="i" class="eachData">
           <div class="title">{{plcDataArray[0][i-1]}}</div>
           <div class="divider"></div>
           <div class="content">{{plcDataArray[1][i-1]}}</div>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -23,9 +24,9 @@ export default {
   },
   props: { info: Object },
   watch: {
-    info() {
-      this.getData(this.info.equipmentId);
-    },
+    // info() {
+    //   this.getData(this.info.equipmentId);
+    // },
   },
   data() {
     return {

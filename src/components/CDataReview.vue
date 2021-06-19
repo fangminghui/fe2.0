@@ -55,7 +55,7 @@ export default {
         }
         if (!this.dataList.isWlq) {
           this.drawLine("ccllArray", "出厂水量", "m³", this.ccllArray);
-          this.drawLine("ydlArray", "用电量", "m³", this.ydlArray);
+          this.drawLine("ydlArray", "用电量", "kw.h", this.ydlArray);
         } else {
           this.drawLine("ccllArray", "取水泵站用电量", "kw.h", this.ccllArray);
           this.drawLine("ydlArray", "加压泵站用电量", "kw.h", this.ydlArray);
@@ -72,7 +72,7 @@ export default {
         }
         if (!this.dataList.isYpl) {
           this.$nextTick(function () {
-            this.drawLine("swArray" + index, this.dataList.swArray[index].name, "m³", this.swArray[index]);
+            this.drawLine("swArray" + index, this.dataList.swArray[index].name, "m", this.swArray[index]);
           });
         } else {
           this.$nextTick(function () {

@@ -25,7 +25,7 @@
             <div v-for="(node,indexx) in item.nodes" :key="indexx">
               &emsp;&emsp;&emsp;
               <span class="xuhao">{{indexx+1}}</span>
-              &emsp;{{node[0]}}&emsp;/&emsp;{{node[0]}}
+              &emsp;{{node[1]}}&emsp;/&emsp;{{node[0]}}
             </div>
           </div>
         </list>
